@@ -1,5 +1,5 @@
 
-<a href="/" class="font-heading font-semibold text-xl text-gray-700 hover:text-gray-800">
-    <x-lucide-book-open-text class="size-8 text-gray-700 inline hover:text-gray-800" />
-    Logbook
+<a href="/" class="flex items-center space-x-2 rtl:space-x-reverse">
+    <x-lucide-notebook-pen class="size-7 text-primary-600" />
+    <span class="self-center text-2xl font-semibold whitespace-nowrap">Logbook</span>
 </a>
