@@ -37,9 +37,9 @@ class AuthController extends Controller
 
     public function registerPost(Request $req){
         $req->validate([
-            "username" => ["required", new Lowercase(), "max:255"],
+            "username" => ["required", new Lowercase(), "max:255", "unique:users"],
             "email" => "required | email | unique:users",
-            "password" => "required | min:8"
+            "password" => "required | min:8 | confirmed"
         ]);
 
         $data["username"] = $req->input("username");
@@ -49,7 +49,7 @@ class AuthController extends Controller
 
         if (!$user) {
             return redirect(route("register"))
-                ->with("error", "Registration failed, try again later");
+                ->with("error", "Registration failed. Try again shortly.");
         }
 
         return redirect(route("login"))

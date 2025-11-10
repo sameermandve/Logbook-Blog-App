@@ -1,0 +1,65 @@
+<section>
+    <header>
+        <h2 class="font-heading font-medium text-lg text-gray-900">
+            Profile Information
+        </h2>
+
+        <p class="text-sm text-gray-600 mt-1">
+            Update your account's username and email-address.
+        </p>
+
+        @if (session()->has("status"))
+            <x-alert class="text-success-800 bg-success-50 mt-4">
+                {{ session()->get("status") }}
+            </x-alert>
+        @endif
+
+        @if (session()->has("error"))
+            <x-alert class="text-error-800 bg-error-50 mt-4">
+                {{ session()->get("error") }}
+            </x-alert>
+        @endif
+    </header>
+
+    <form action="{{ route("profile.update") }}" method="post" class="mt-6 space-y-6">
+        @csrf
+        @method('PATCH')
+        <div class="flex flex-col items-center justify-center">
+            <img class="size-15 rounded-full" src="https://res.cloudinary.com/dhh432tdg/image/upload/v1758554584/avatar_pco8fs.png" alt="Rounded avatar">
+        </div>
+
+        <div>
+            <x-input-label for="avatar">Upload Image</x-input-label>
+            <x-file-input name="avatar" id="avatar" />
+        </div>
+
+        <div>
+            <x-input-label for="username">Username</x-input-label>
+            <x-text-input type="text" name="username" id="username" value="{{ old('username', $user->username) }}"
+                class="block mt-2 w-full" />
+            @error("username")
+                <x-input-error>{{ $message }}</x-input-error>
+            @enderror
+        </div>
+
+        <div>
+            <x-input-label for="username">Email</x-input-label>
+            <x-text-input type="email" name="email" id="email" value="{{ old('email', $user->email) }}"
+                class="block mt-2 w-full" />
+            @error("email")
+                <x-input-error>{{ $message }}</x-input-error>
+            @enderror
+        </div>
+
+        <div>
+            <x-input-label for="bio">Bio</x-input-label>
+            <x-textarea name="bio" id="bio" 
+                class="block mt-2 w-full">{{ old('bio', $user->bio) }}</x-textarea>
+            @error("bio")
+                <x-input-error>{{ $message }}</x-input-error>
+            @enderror
+        </div>
+
+        <x-primary-button>Save</x-primary-button>
+    </form>
+</section>

@@ -7,11 +7,11 @@
         <x-heading>Login to your account</x-heading>
 
         @if (session()->has("success"))
-            <x-alert class="text-green-800 bg-green-50">{{ session()->get("success") }}</x-alert>
+            <x-alert class="text-success-800 bg-success-50">{{ session()->get("success") }}</x-alert>
         @endif
 
         @if (session()->has("error"))
-            <x-alert class="text-red-800 bg-red-50">{{ session()->get("error") }}</x-alert>
+            <x-alert class="text-error-800 bg-error-50">{{ session()->get("error") }}</x-alert>
         @endif
 
         <form action="{{ route("login.post") }}" method="post" class="space-y-4 md:space-y-6" novalidate>

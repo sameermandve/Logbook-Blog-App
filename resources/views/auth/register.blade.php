@@ -15,8 +15,8 @@
 
             <div>
                 <x-input-label for="username">Username</x-input-label>
-                <x-text-input type="text" id="username" name="username" placeholder="johndoe"
-                    value="{{ old('username') }}" class="block mt-2 w-full" />
+                <x-text-input type="text" id="username" name="username" placeholder="johndoe" value="{{ old('username') }}"
+                    class="block mt-2 w-full" />
                 @error("username")
                     <x-input-error>{{ $message }}</x-input-error>
                 @enderror
@@ -38,6 +38,12 @@
                 @error("password")
                     <x-input-error>{{ $message }}</x-input-error>
                 @enderror
+            </div>
+
+            <div>
+                <x-input-label for="password_confirmation">Confirm Password</x-input-label>
+                <x-text-input type="password" id="password_confirmation" name="password_confirmation" placeholder="********"
+                    class="block mt-2 w-full" />
             </div>
 
             <x-primary-button>Register</x-primary-button>

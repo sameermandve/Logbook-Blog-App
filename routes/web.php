@@ -1,19 +1,24 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get("/login", [AuthController::class, "login"])
-    ->name("login");
+Route::controller(AuthController::class)
+    ->group(function () {
 
-Route::post("/login", [AuthController::class, "loginPost"])
-    ->name("login.post");
+        Route::get("/login", "login")
+            ->name("login");
 
-Route::get("/register", [AuthController::class, "register"])
-    ->name("register");
+        Route::post("/login", "loginPost")
+            ->name("login.post");
 
-Route::post("/register", [AuthController::class, "registerPost"])
-    ->name("register.post");
+        Route::get("/register", "register")
+            ->name("register");
+
+        Route::post("/register", "registerPost")
+            ->name("register.post");
+    });
 
 Route::middleware("auth")->group(function () {
 
@@ -23,4 +28,18 @@ Route::middleware("auth")->group(function () {
     Route::get('/', function () {
         return view('home');
     })->name("home");
+
+    Route::prefix("profile")->group(function () {
+        Route::get("/", [ProfileController::class, "profile"])
+            ->name("profile.view");
+
+        Route::patch("update", [ProfileController::class, "editUserInfo"])
+            ->name("profile.update");
+
+        Route::delete("delete", [ProfileController::class, "deleteUser"])
+            ->name("profile.delete");
+
+        Route::patch("edit/password", [ProfileController::class, "changeUserPassword"])
+            ->name("password.change");
+    });
 });

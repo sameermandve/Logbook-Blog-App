@@ -13,7 +13,12 @@
         <div class="flex flex-col items-center justify-center">
             <div class="w-full space-y-6">
                 @include("include.navbar")
-                @yield("main")
+
+                <div class="w-full max-w-3xl mx-auto mb-4">
+                    <div class="container">
+                        @yield("main")
+                    </div>
+                </div>
             </div>
         </div>
     </div>
