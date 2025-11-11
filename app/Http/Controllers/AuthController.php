@@ -17,8 +17,8 @@ class AuthController extends Controller
 
     public function loginPost(Request $req){
         $req->validate([
-            "email" => "required | email",
-            "password" => "required | min:8",
+            "email" => ["required", "string", "email"],
+            "password" => ["required", "string", "min:8"],
         ]);
 
         $credentials = $req->only("email", "password");
@@ -37,9 +37,9 @@ class AuthController extends Controller
 
     public function registerPost(Request $req){
         $req->validate([
-            "username" => ["required", new Lowercase(), "max:255", "unique:users"],
-            "email" => "required | email | unique:users",
-            "password" => "required | min:8 | confirmed"
+            "username" => ["required", "string", new Lowercase(), "max:255", "unique:users"],
+            "email" => ["required", "string", "email", "unique:users"],
+            "password" => ["required", "string", "min:8", "confirmed"]
         ]);
 
         $data["username"] = $req->input("username");

@@ -24,9 +24,9 @@ class ProfileController extends Controller
         $user_id = Auth::id();
 
         $req->validate([
-            "username" => [new Lowercase()],
-            "email" => ["email", Rule::unique("users")->ignore($user_id)],
-            "bio" => "required | max:150"
+            "username" => ["string", new Lowercase()],
+            "email" => ["string", "email", Rule::unique("users")->ignore($user_id)],
+            "bio" => ["string", "required", "max:150"]
         ]);
 
         $user = User::find($user_id);
@@ -51,8 +51,8 @@ class ProfileController extends Controller
         $user_id = Auth::id();
 
         $req->validate([
-            "old_password" => "required | current_password",
-            "new_password" => "required | min:8 | confirmed",
+            "old_password" => ["required", "string", "current_password"],
+            "new_password" => ["required", "string", "min:8", "confirmed"],
         ]);
 
         $user = User::find($user_id);
@@ -76,7 +76,7 @@ class ProfileController extends Controller
         $user_id = Auth::id();
 
         $req->validate([
-            "password" => "required | current_password | confirmed",
+            "password" => ["required", "string", "current_password", "confirmed"],
         ]);
 
         $deleted = User::destroy($user_id);
