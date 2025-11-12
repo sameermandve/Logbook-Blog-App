@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,5 +45,13 @@ Route::middleware("auth")->group(function () {
 
         Route::get("avatar-delete", [ProfileController::class, "deleteAvatar"])
             ->name("profile.avatar.delete");
+    });
+
+    Route::prefix("post")->group(function () {
+        Route::get("create", [PostController::class, "create"])
+            ->name("post.form");
+
+        Route::post("create", [PostController::class, "createPost"])
+            ->name("post.create");
     });
 });

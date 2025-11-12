@@ -3,33 +3,33 @@
 @section("title", "Logboook | Profile")
 
 @section("main")
-    <div class="flex justify-center items-center lg:shadow sm:rounded-2xl lg:border">
-        <div class="flex flex-col w-full">
-            <div class="mt-8 mb-1">
-                <x-heading class="text-center">Profile Page</x-heading>
-            </div>
+<div class="flex justify-center items-center lg:shadow sm:rounded-2xl lg:border">
+    <div class="flex flex-col w-full">
+        <div class="mt-8 mb-1">
+            <x-heading class="text-center">Profile Page</x-heading>
+        </div>
 
-            <div class="py-12">
-                <div class="sm:px-6 lg:px-8 space-y-6">
-                    <div class="p-4 sm:p-8 bg-white shadow rounded-lg mx-4 sm:mx-0">
-                        <div>
-                            @include("profile.partials.change-user-info", ["user" => $user])
-                        </div>
+        <div class="py-12">
+            <div class="sm:px-6 lg:px-8 space-y-6">
+                <div class="p-4 sm:p-8 bg-white shadow rounded-lg mx-4 sm:mx-0">
+                    <div>
+                        @include("profile.partials.change-user-info", ["user" => $user])
                     </div>
+                </div>
 
-                    <div class="p-4 sm:p-8 bg-white shadow rounded-lg mx-4 sm:mx-0">
-                        <div>
-                            @include("profile.partials.change-password")
-                        </div>
+                <div class="p-4 sm:p-8 bg-white shadow rounded-lg mx-4 sm:mx-0">
+                    <div>
+                        @include("profile.partials.change-password")
                     </div>
+                </div>
 
-                    <div class="p-4 sm:p-8 shadow rounded-lg bg-error-50 mx-4 sm:mx-0">
-                        <div>
-                            @include("profile.partials.delete-user")
-                        </div>
+                <div class="p-4 sm:p-8 shadow rounded-lg bg-error-50 mx-4 sm:mx-0">
+                    <div>
+                        @include("profile.partials.delete-user")
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 @endsection

@@ -5,7 +5,7 @@
         </h2>
 
         <p class="text-sm text-gray-600 mt-1">
-            Update your account's username and email-address.
+            Update your account details, including username, bio, email address, and profile avatar.
         </p>
 
         @if (session()->has("success-avatar"))
