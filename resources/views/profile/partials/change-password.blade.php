@@ -8,15 +8,9 @@
             Ensure your account is using a long, random password to stay secure.
         </p>
 
-        @if (session()->has("status"))
-            <x-alert class="text-success-800 bg-success-50 mt-4">
-                {{ session()->get("status") }}
-            </x-alert>
-        @endif
-
-        @if (session()->has("error"))
+        @if (session()->has("error-password"))
             <x-alert class="text-error-800 bg-error-50 mt-4">
-                {{ session()->get("error") }}
+                {{ session()->get("error-password") }}
             </x-alert>
         @endif
     </header>

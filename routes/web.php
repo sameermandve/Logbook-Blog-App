@@ -41,5 +41,8 @@ Route::middleware("auth")->group(function () {
 
         Route::patch("edit/password", [ProfileController::class, "changeUserPassword"])
             ->name("password.change");
+
+        Route::get("avatar-delete", [ProfileController::class, "deleteAvatar"])
+            ->name("profile.avatar.delete");
     });
 });

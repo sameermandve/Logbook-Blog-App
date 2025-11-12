@@ -8,9 +8,9 @@
             Once your account is deleted, all of its resources and data will be permanently deleted.
         </p>
 
-        @if (session()->has("error"))
+        @if (session()->has("error-delete"))
             <x-alert class=" text-error-800 bg-error-50 mt-4">
-                {{ session()->get("error") }}
+                {{ session()->get("error-delete") }}
             </x-alert>
         @endif
     </header>

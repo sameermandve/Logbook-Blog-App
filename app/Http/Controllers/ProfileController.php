@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Rules\Lowercase;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
@@ -26,10 +28,47 @@ class ProfileController extends Controller
         $req->validate([
             "username" => ["string", new Lowercase()],
             "email" => ["string", "email", Rule::unique("users")->ignore($user_id)],
-            "bio" => ["string", "required", "max:150"]
+            "bio" => ["string", "required", "max:150"],
+            "avatar" => ["image", "max:5048", "mimes:jpeg,jpg,png,svg"],
         ]);
 
         $user = User::find($user_id);
+        $avatarUrl = null;
+        $avatarPublicId = null;
+
+        try {
+
+            if ($req->hasFile("avatar")) {
+
+                if ($user->public_id) {
+                    Cloudinary::uploadApi()
+                        ->destroy($user->public_id);
+                }
+
+                $uploaded = Cloudinary::uploadApi()->upload(
+                    $req->file('avatar')->getRealPath(),
+                    [
+                        'folder' => 'logbook/avatars',
+                        'transformation' => [
+                            'width' => 400,
+                            'height' => 400,
+                            'crop' => 'fill',
+                            'gravity' => 'auto',
+                        ],
+                    ]
+                );
+
+                $avatarUrl = $uploaded["secure_url"];
+                $avatarPublicId = $uploaded["public_id"];
+
+                $user->avatar = $avatarUrl;
+                $user->public_id = $avatarPublicId;
+            }
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->with("avatar-error", "Avatar upload failed: " . $e->getMessage());
+        }
 
         if ($user) {
             $user->username = $req->input("username");
@@ -39,11 +78,11 @@ class ProfileController extends Controller
             $user->save();
 
             return redirect(route("profile.view"))
-                ->with("status", "Profile updated successfully");
+                ->with("success-info", "Profile updated successfully");
         }
 
         return redirect(route("profile.view"))
-            ->with("error", "Request failed. Try again shortly.");
+            ->with("error-info", "Request failed. Try again shortly.");
     }
 
     public function changeUserPassword(Request $req)
@@ -69,15 +108,22 @@ class ProfileController extends Controller
         }
 
         return redirect(route("profile.view"))
-            ->with("error", "Request failed. Try again shortly.");
+            ->with("error-password", "Request failed. Try again shortly.");
     }
 
-    public function deleteUser(Request $req){
+    public function deleteUser(Request $req)
+    {
         $user_id = Auth::id();
+        $user = User::find($user_id);
 
         $req->validate([
             "password" => ["required", "string", "current_password", "confirmed"],
         ]);
+
+        if ($user->public_id) {
+            Cloudinary::uploadApi()
+                ->destroy($user->public_id);
+        }
 
         $deleted = User::destroy($user_id);
 
@@ -87,6 +133,26 @@ class ProfileController extends Controller
         }
 
         return redirect(route("login"))
-                ->with("error", "Request failed. Try again shortly.");
+            ->with("error-delete", "Request failed. Try again shortly.");
+    }
+
+    public function deleteAvatar()
+    {
+        $user_id = Auth::id();
+        $user = User::find($user_id);
+
+        if ($user->public_id) {
+            Cloudinary::uploadApi()
+                ->destroy($user->public_id);
+            $user->avatar = null;
+            $user->public_id = null;
+            $user->save();
+
+            return redirect(route("profile.view"))
+                ->with("success-avatar", "Avatar removed successfully");
+        }
+
+        return redirect(route("profile.view"))
+            ->with("error-avatar", "Avatar not available to remove");
     }
 }

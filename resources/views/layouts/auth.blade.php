@@ -10,7 +10,7 @@
 
 <body>
     <div class="h-screen">
-        <div class="container mx-auto md:h-full flex flex-col items-center justify-center">
+        <div class="container mx-auto my-6 flex flex-col items-center justify-center">
             <div class="w-full max-w-md">
                 <div class="flex flex-col items-center justify-center space-y-4 font-sans px-6 py-8">
                     <div>
