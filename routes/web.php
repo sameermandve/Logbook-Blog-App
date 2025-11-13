@@ -26,9 +26,8 @@ Route::middleware("auth")->group(function () {
     Route::get("/logout", [AuthController::class, "logout"])
         ->name("logout");
 
-    Route::get('/', function () {
-        return view('home');
-    })->name("home");
+    Route::get('/', [PostController::class, "index"])
+        ->name("home");
 
     Route::prefix("profile")->group(function () {
         Route::get("/", [ProfileController::class, "profile"])
@@ -53,5 +52,8 @@ Route::middleware("auth")->group(function () {
 
         Route::post("create", [PostController::class, "createPost"])
             ->name("post.create");
+
+        Route::get("show/{post:slug}", [PostController::class, "show"])
+            ->name("post.show");
     });
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,14 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
+    public function index(){
+        $user = User::find(Auth::id());
+
+        return view("home", [
+            "user" => $user
+        ]);
+    }
+
     public function create()
     {
         return view("post.create");
@@ -20,8 +29,8 @@ class PostController extends Controller
     {
         $req->validate([
             "title" => ["required", "string", "max:100"],
-            "cover_image" => ["image", "max:7048", "mimes:jpeg,jpg,png,svg"],
-            "description" => ["required", "string", "max:600"],
+            "cover_image" => ["required", "image", "max:10480", "mimes:jpeg,jpg,png,svg"],
+            "description" => ["required", "string", "max:1000"],
         ]);
 
         $coverImageUrl = null;
@@ -61,5 +70,11 @@ class PostController extends Controller
 
         return redirect(route("post.form"))
             ->with("success-post", "✅ Post has been created successfully.");
+    }
+
+    public function show(Post $post) {
+        return view("post.show", [
+            "post" => $post
+        ]);
     }
 }

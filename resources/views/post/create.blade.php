@@ -38,7 +38,6 @@
                 <div>
                     <x-input-label for="cover_image">Upload Image</x-input-label>
                     <x-file-input name="cover_image" id="cover_image" />
-                    <p class="text-xs text-gray-400 ms-1">Note: Uploading an image for the post is optional.</p>
                     @error("cover_image")
                     <x-input-error>{{ $message }}</x-input-error>
                     @enderror
