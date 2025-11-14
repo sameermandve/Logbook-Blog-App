@@ -1,4 +1,4 @@
-<div class="w-full flex items-center border-b border-gray-200 pb-4">
+<div class="w-full flex items-center">
     <div class="flex-1 flex items-center justify-center">
         <x-lucide-heart class="size-6 text-error-600 hover:text-error-700 hover:scale-105" />
         <span class="text-gray-500 text-lg font-semibold ms-2">30 likes</span>
