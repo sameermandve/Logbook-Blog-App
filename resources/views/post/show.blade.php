@@ -5,7 +5,7 @@
 @section("content")
 
 <article
-    class="bg-white sm:shadow-lg sm:rounded-2xl p-6 sm:p-10 mx-auto max-w-4xl flex flex-col items-center border-2">
+    class="bg-white sm:shadow-lg sm:rounded-2xl p-6 sm:p-10 mx-auto max-w-4xl flex flex-col items-center lg:border-2 border-gray-200">
 
     <!-- Post Title -->
     <h1 class="text-2xl sm:text-3xl xl:text-4xl font-bold tracking-tight text-gray-900 text-center xl:text-left">

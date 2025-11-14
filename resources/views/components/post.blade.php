@@ -10,11 +10,14 @@
         <div class="mb-3 text-sm sm:text-base text-gray-700 leading-relaxed">
             {{ Str::words($post->description, 30) }}
         </div>
-        <a href="{{ route("post.show", $post->slug) }}">
-            <x-secondary-button width="md:w-1/4">
-                <div class="flex items-center justify-center text-sm">
+        <a x-data="formLoading" href="{{ route("post.show", $post->slug) }}" @click="start">
+            <x-secondary-button x-bind:disabled="loading" width="w-full sm:w-1/4" x-bind:class="loading ? 'cursor-not-allowed' : 'cursor-default'">
+                <div x-show="!loading" class="flex items-center justify-center text-sm">
                     <span>Read more</span>
                     <x-lucide-arrow-right class="size-4 ms-2" />
+                </div>
+                <div x-show="loading" class="flex items-center justify-center">
+                    <x-lucide-loader-circle class="size-6 animate-spin" />
                 </div>
             </x-secondary-button>
         </a>

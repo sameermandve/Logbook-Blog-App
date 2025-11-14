@@ -21,9 +21,9 @@
             @endif
         </div>
 
-        <div class="pt-8 pb-4">
+        <div x-data="formLoading" class="pt-8 pb-4">
             <!-- Form content goes here -->
-            <form action="{{ route("post.create") }}" method="post" class="space-y-6" enctype="multipart/form-data">
+            <form action="{{ route("post.create") }}" method="post" class="space-y-6" @submit="start" enctype="multipart/form-data">
                 @csrf
                 <!-- Post Title -->
                 <div>
@@ -53,7 +53,12 @@
                 </div>
 
                 <!-- Submit Button -->
-                <x-primary-button>Create new post</x-primary-button>
+                <x-primary-button x-bind:disabled="loading" x-bind:class="loading ? 'cursor-not-allowed' : 'cursor-default'">
+                    <span x-show="!loading">Create new post</span>
+                    <div x-show="loading" class="flex items-center justify-center">
+                        <x-lucide-loader-circle class="size-6 animate-spin" />
+                    </div>
+                </x-primary-button>
             </form>
         </div>
     </div>

@@ -1,4 +1,4 @@
-<section>
+<section x-data="formLoading">
     <header>
         <h2 class="font-heading font-medium text-lg text-gray-900">
             Profile Information
@@ -33,7 +33,7 @@
         @endif
     </header>
 
-    <form action="{{ route("profile.update") }}" method="post" class="mt-6 space-y-6" enctype="multipart/form-data">
+    <form action="{{ route("profile.update") }}" method="post" class="mt-6 space-y-6" enctype="multipart/form-data" @submit="start">
         @csrf
         @method('PATCH')
         <div class="flex flex-col items-center justify-center">
@@ -75,6 +75,12 @@
             @enderror
         </div>
 
-        <x-primary-button>Save</x-primary-button>
+        <!-- <x-primary-button>Save</x-primary-button> -->
+        <x-primary-button x-bind:disabled="loading" x-bind:class="loading ? 'cursor-not-allowed' : 'cursor-default'">
+            <span x-show="!loading">Save</span>
+            <div x-show="loading" class="flex items-center justify-center">
+                <x-lucide-loader-circle class="size-6 animate-spin" />
+            </div>
+        </x-primary-button>
     </form>
 </section>
