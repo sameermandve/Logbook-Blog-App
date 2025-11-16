@@ -1,4 +1,4 @@
-<div class="flex flex-col items-center justify-center bg-white border border-gray-200 rounded-xl shadow-sm p-10 text-center mb-8 w-full max-w-3xl mx-auto">
+<div class="flex flex-col items-center justify-center bg-white border border-gray-200 rounded-xl shadow-sm p-10 text-center mt-6 mb-8 w-full max-w-3xl mx-auto">
     <div class="bg-gray-300 p-4 rounded-full mb-4 animate-pulse text-gray-500">
         <x-lucide-file-x class="w-10 h-10 text-gray-500" />
     </div>

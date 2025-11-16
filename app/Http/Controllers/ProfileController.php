@@ -157,7 +157,7 @@ class ProfileController extends Controller
 
     public function showUserProfile(User $user)
     {
-        $posts = $user->posts()->latest()->get();
+        $posts = $user->posts()->latest()->simplePaginate(3);
 
         return view("profile.show-profile", [
             "user" => $user,
@@ -168,7 +168,7 @@ class ProfileController extends Controller
     public function selfProfileShow()
     {
         $user = User::findOrFail(Auth::id());
-        $posts = $user->posts()->latest()->get();
+        $posts = $user->posts()->latest()->simplePaginate(3);
 
         return view("profile.self-show", [
             "user" => $user,

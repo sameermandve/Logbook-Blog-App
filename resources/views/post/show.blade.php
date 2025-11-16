@@ -4,7 +4,7 @@
 
 @section("content")
 
-<!-- From PostController → show() => $post -->
+<!-- From PostController → show() => $post & $user -->
 <article
     class="bg-white md:shadow-lg md:rounded-2xl p-6 sm:p-10 mx-auto mt-8 max-w-4xl flex flex-col items-center md:border-2 md:border-gray-200">
 
@@ -13,15 +13,18 @@
         <!-- Left: Author Info -->
         <a href="" class="flex items-center space-x-3">
             <img
-                src=""
-                alt=""
+                src="{{ $post->author->avatar }}"
+                alt="{{ $post->author->username }}"
                 class="w-12 h-12 rounded-full border border-gray-300 object-cover" />
 
             <div>
                 <p class="font-semibold text-gray-900 text-lg">
-                    janedoe
+                    {{ $post->author->username }}
                 </p>
-                <p class="text-sm text-gray-500">Author</p>
+                <p class="text-sm font-medium text-gray-500">
+                    •
+                    <span>{{ $post->published_at }}</span>
+                </p>
             </div>
         </a>
 

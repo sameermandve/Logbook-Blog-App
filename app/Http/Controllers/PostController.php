@@ -12,9 +12,13 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $user = User::findOrFail(Auth::id());
-        $posts = $user->posts()->latest()->get();
+        $posts = $user->posts()
+            ->with("author")
+            ->latest()
+            ->simplePaginate(5);
 
         return view("home", [
             "posts" => $posts,
@@ -73,9 +77,12 @@ class PostController extends Controller
             ->with("success-post", "✅ Post has been created successfully.");
     }
 
-    public function show(Post $post) {
+    public function show(Post $post)
+    {
+        $post = $post->load("author");
+
         return view("post.show", [
-            "post" => $post
+            "post" => $post,
         ]);
     }
 }

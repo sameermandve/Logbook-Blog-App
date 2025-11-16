@@ -8,5 +8,9 @@
     @empty
     <x-no-post />
     @endforelse
+
+    <div class="my-4">
+        {{ $posts->links() }}
+    </div>
 </div>
 @endsection

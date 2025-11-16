@@ -19,12 +19,16 @@
             </ul>
         </div>
 
-        <div x-show="tab==='home'" class="flex flex-col space-y-8">
+        <!-- From ProfileController → showUserProfile() & selfProfileShow() -->
+        <div x-show="tab==='home'" class="flex flex-col justify-between space-y-8">
             @forelse ($posts as $post)
             <x-post :post="$post" />
             @empty
             <x-no-post />
             @endforelse
+            <div class="mt-4">
+                {{ $posts->links() }}
+            </div>
         </div>
 
         <div x-show="tab==='about'" class="flex flex-col space-y-8 ml-2 mt-2">
