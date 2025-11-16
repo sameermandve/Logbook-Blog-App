@@ -27,7 +27,7 @@ class ProfileController extends Controller
         $req->validate([
             "username" => ["string", new Lowercase()],
             "email" => ["string", "email", Rule::unique("users")->ignore($user_id)],
-            "bio" => ["string", "required", "max:150"],
+            "bio" => ["string", "required", "max:200"],
             "avatar" => ["image", "max:5048", "mimes:jpeg,jpg,png,svg"],
         ]);
 
@@ -153,5 +153,26 @@ class ProfileController extends Controller
 
         return redirect(route("profile.view"))
             ->with("error-avatar", "Avatar not available to remove");
+    }
+
+    public function showUserProfile(User $user)
+    {
+        $posts = $user->posts()->latest()->get();
+
+        return view("profile.show-profile", [
+            "user" => $user,
+            "posts" => $posts,
+        ]);
+    }
+
+    public function selfProfileShow()
+    {
+        $user = User::findOrFail(Auth::id());
+        $posts = $user->posts()->latest()->get();
+
+        return view("profile.self-show", [
+            "user" => $user,
+            "posts" => $posts,
+        ]);
     }
 }

@@ -2,8 +2,10 @@
 
 @section("title", "Logboook | Create post")
 
+<!-- View => From PostController → create() -->
+<!-- Action => From PostController → createPost() -->
 @section("main")
-<div class="flex justify-center items-center lg:shadow sm:rounded-2xl">
+<div class="flex justify-center items-center lg:shadow-md lg:border-2 lg:border-gray-300 sm:rounded-2xl mt-8">
     <div class="flex flex-col w-full p-6 lg:p-8">
         <div class="mb-1">
             <x-heading class="text-center">Create New Post</x-heading>

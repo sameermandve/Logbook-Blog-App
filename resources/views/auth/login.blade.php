@@ -14,6 +14,8 @@
     <x-alert class="text-error-800 bg-error-50">{{ session()->get("error") }}</x-alert>
     @endif
 
+    <!-- View => From AuthController → login() -->
+    <!-- Action => From AuthController → loginPost() -->
     <form action="{{ route("login.post") }}" method="post" class="space-y-4 md:space-y-6" @submit="start" novalidate>
         @csrf
 

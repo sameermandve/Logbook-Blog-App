@@ -33,11 +33,14 @@
         @endif
     </header>
 
+    <!-- View => From ProfileController → profile() => $user -->
+    <!-- Action => From ProfileController → editUserInfo() -->
     <form action="{{ route("profile.update") }}" method="post" class="mt-6 space-y-6" enctype="multipart/form-data" @submit="start">
         @csrf
         @method('PATCH')
         <div class="flex flex-col items-center justify-center">
             <img class="size-25 rounded-full border-2 mb-1" src="{{ $user->avatar ?? 'https://res.cloudinary.com/dhh432tdg/image/upload/v1758554584/avatar_pco8fs.png' }}" alt="Rounded avatar">
+            <!-- From ProfileController → deleteAvatar() -->
             <a href="{{ route('profile.avatar.delete') }}">
                 <x-lucide-trash-2 class="size-6 text-error-600 hover:text-error-700 cursor-pointer hover:scale-105" />
             </a>

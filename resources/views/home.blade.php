@@ -2,7 +2,8 @@
 
 @section("content")
 <div class="space-y-8 mt-8 sm:mt-12 flex flex-col p-4 sm:p-0">
-    @forelse ($user->posts as $post)
+    <!-- From PostController → index() -->
+    @forelse ($posts as $post)
     <x-post :post="$post" />
     @empty
     <x-no-post />

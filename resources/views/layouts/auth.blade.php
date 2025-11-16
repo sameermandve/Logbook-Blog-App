@@ -8,6 +8,7 @@
     @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
 
+<!-- Layout for login and register page -->
 <body>
     <div class="h-screen">
         <div class="container mx-auto my-6 flex flex-col items-center justify-center">

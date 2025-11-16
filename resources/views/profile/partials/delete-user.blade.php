@@ -15,6 +15,8 @@
         @endif
     </header>
 
+    <!-- View => From ProfileController → profile() -->
+    <!-- Action => From ProfileController → deleteUser() -->
     <form action="{{ route("profile.delete") }}" method="post" class="mt-6 space-y-6" @submit="start" autocomplete="off">
         @csrf
         @method('DELETE')

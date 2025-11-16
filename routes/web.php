@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)
@@ -29,8 +30,16 @@ Route::middleware("auth")->group(function () {
     Route::get('/', [PostController::class, "index"])
         ->name("home");
 
+    Route::prefix("search")->group(function () {
+        Route::get('/', [SearchController::class, "searchForm"])
+            ->name("search");
+
+        Route::get('/user', [SearchController::class, "getSearchedUser"])
+            ->name("search.get");
+    });
+
     Route::prefix("profile")->group(function () {
-        Route::get("/", [ProfileController::class, "profile"])
+        Route::get("/settings", [ProfileController::class, "profile"])
             ->name("profile.view");
 
         Route::patch("update", [ProfileController::class, "editUserInfo"])
@@ -41,6 +50,12 @@ Route::middleware("auth")->group(function () {
 
         Route::patch("edit/password", [ProfileController::class, "changeUserPassword"])
             ->name("password.change");
+
+        Route::get("/show/{user:username}", [ProfileController::class, "showUserProfile"])
+            ->name("profile.show");
+
+        Route::get("/self", [ProfileController::class, "selfProfileShow"])
+            ->name("self.profile.show");
 
         Route::get("avatar-delete", [ProfileController::class, "deleteAvatar"])
             ->name("profile.avatar.delete");

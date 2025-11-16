@@ -4,8 +4,48 @@
 
 @section("content")
 
+<!-- From PostController → show() => $post -->
 <article
-    class="bg-white sm:shadow-lg sm:rounded-2xl p-6 sm:p-10 mx-auto max-w-4xl flex flex-col items-center lg:border-2 border-gray-200">
+    class="bg-white md:shadow-lg md:rounded-2xl p-6 sm:p-10 mx-auto mt-8 max-w-4xl flex flex-col items-center md:border-2 md:border-gray-200">
+
+    <!-- Post Header -->
+    <div class="w-full max-w-4xl mb-6 flex items-center justify-between pb-6 border-b border-gray-200">
+        <!-- Left: Author Info -->
+        <a href="" class="flex items-center space-x-3">
+            <img
+                src=""
+                alt=""
+                class="w-12 h-12 rounded-full border border-gray-300 object-cover" />
+
+            <div>
+                <p class="font-semibold text-gray-900 text-lg">
+                    janedoe
+                </p>
+                <p class="text-sm text-gray-500">Author</p>
+            </div>
+        </a>
+
+        <!-- Right: Follow Button -->
+        @auth
+        @if (auth()->id())
+        <form action="" method="POST">
+            @csrf
+
+            @if (auth()->user())
+            <button
+                class="px-4 py-2 text-sm font-semibold border border-primary-600 text-primary-600 rounded-lg hover:bg-primary-50 transition">
+                Following
+            </button>
+            @else
+            <button
+                class="px-4 py-2 text-sm font-semibold bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition">
+                Follow
+            </button>
+            @endif
+        </form>
+        @endif
+        @endauth
+    </div>
 
     <!-- Post Title -->
     <h1 class="text-2xl sm:text-3xl xl:text-4xl font-bold tracking-tight text-gray-900 text-center xl:text-left">

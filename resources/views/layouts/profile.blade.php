@@ -8,10 +8,10 @@
     @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
 
-<!-- Layout for post.show.blade.php, home.blade.php -->
+<!-- Layout for profile.self-show.blade.php, profile.show-profile.blade.php -->
 <body>
-    <x-layout-app width="max-w-5xl">
-        @yield("content")
+    <x-layout-app width="max-w-7xl">
+        @yield("profile-content")
     </x-layout-app>
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>

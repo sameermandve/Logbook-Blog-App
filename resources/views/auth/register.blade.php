@@ -10,6 +10,8 @@
     <x-alert class="text-red-800 bg-red-50">{{ session()->get("error") }}</x-alert>
     @endif
 
+    <!-- View => From AuthController → register() -->
+    <!-- Action => From AuthController → registerPost() -->
     <form action="{{ route("register.post") }}" method="post" class="space-y-4 md:space-y-6" @submit="start" autocomplete="off" novalidate>
         @csrf
 

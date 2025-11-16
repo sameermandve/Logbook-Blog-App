@@ -8,6 +8,9 @@
     @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
 
+<!-- Layout for profile.partials, profile.edit-profile.blade.php
+    search.blade.php & post.create.blade.php -->
+
 <body>
     <x-layout-app>
         @yield("main")

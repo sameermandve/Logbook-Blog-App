@@ -15,6 +15,8 @@
         @endif
     </header>
 
+    <!-- View => From ProfileController → profile() -->
+    <!-- Action => From ProfileController → changeUserPassword() -->
     <form action="{{ route("password.change") }}" method="post" class="mt-6 space-y-6" @submit="start" autocomplete="off">
         @csrf
         @method('PATCH')

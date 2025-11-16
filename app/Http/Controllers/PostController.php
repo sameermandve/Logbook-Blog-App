@@ -13,10 +13,11 @@ use Illuminate\Support\Str;
 class PostController extends Controller
 {
     public function index(){
-        $user = User::find(Auth::id());
+        $user = User::findOrFail(Auth::id());
+        $posts = $user->posts()->latest()->get();
 
         return view("home", [
-            "user" => $user
+            "posts" => $posts,
         ]);
     }
 

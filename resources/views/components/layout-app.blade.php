@@ -6,7 +6,7 @@
             @include("include.navbar")
 
             <!-- Main content -->
-            <div class="flex justify-center w-full px-4 sm:px-6 lg:px-8 mt-8 sm:mt-12">
+            <div class="flex justify-center w-full px-4 sm:px-6 lg:px-8 mt-15 sm:mt-18">
                 <div class="w-full {{ $width }} font-sans mx-auto mb-4">
                     {{ $slot }}
                 </div>

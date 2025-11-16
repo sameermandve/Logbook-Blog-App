@@ -3,7 +3,8 @@
 @section("title", "Logboook | Profile")
 
 @section("main")
-<div class="flex justify-center items-center lg:shadow sm:rounded-2xl lg:border">
+<!-- View => From ProfileController → profile() -->
+<div class="flex justify-center items-center lg:shadow-md sm:rounded-2xl lg:border-2 lg:border-gray-300 mt-8">
     <div class="flex flex-col w-full">
         <div class="mt-8 mb-1">
             <x-heading class="text-center">Profile Page</x-heading>
@@ -13,6 +14,7 @@
             <div class="sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 sm:p-8 bg-white shadow rounded-lg mx-4 sm:mx-0">
                     <div>
+                        <!-- View => From ProfileController → profile() => $user -->
                         @include("profile.partials.change-user-info", ["user" => $user])
                     </div>
                 </div>
