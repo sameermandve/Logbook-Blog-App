@@ -11,7 +11,7 @@
     <!-- Post Header -->
     <div class="w-full max-w-4xl mb-6 flex items-center justify-between pb-6 border-b border-gray-200">
         <!-- Left: Author Info -->
-        <a href="" class="flex items-center space-x-3">
+        <a href="{{ route("profile.show", $post->author->username) }}" class="flex items-center space-x-3">
             <img
                 src="{{ $post->author->avatar }}"
                 alt="{{ $post->author->username }}"
@@ -74,7 +74,17 @@
     </div>
 
     <div class="w-full max-w-3xl mb-8">
-        @include("post.partials.post-interaction")
+        <div class="w-full flex items-center">
+
+            <!-- Like Button Section -->
+            <x-like :post="$post" />
+
+            <!-- Comment Button Section -->
+            <div class="flex-1 flex items-center justify-center border-l-2 border-gray-300">
+                <x-lucide-message-circle-more class="size-6 text-gray-500 hover:text-gray-600 hover:scale-105" />
+                <span class="text-gray-500 text-lg font-semibold ms-2">30 comments</span>
+            </div>
+        </div>
     </div>
 
     <div class="w-full max-w-3xl mb-8">

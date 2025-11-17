@@ -13,6 +13,12 @@ use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("auth");
+    }
+
+    // Show Profile Edit Page
     public function profile(Request $req)
     {
         return view("profile.edit-profile", [
@@ -20,18 +26,18 @@ class ProfileController extends Controller
         ]);
     }
 
+    // Handle Profile Edit Request
     public function editUserInfo(Request $req)
     {
-        $user_id = Auth::id();
+        $user = Auth::user();
 
         $req->validate([
             "username" => ["string", new Lowercase()],
-            "email" => ["string", "email", Rule::unique("users")->ignore($user_id)],
+            "email" => ["string", "email", Rule::unique("users")->ignore($user->id)],
             "bio" => ["string", "required", "max:200"],
             "avatar" => ["image", "max:5048", "mimes:jpeg,jpg,png,svg"],
         ]);
 
-        $user = User::find($user_id);
         $avatarUrl = null;
         $avatarPublicId = null;
 
@@ -84,16 +90,15 @@ class ProfileController extends Controller
             ->with("error-info", "Request failed. Try again shortly.");
     }
 
+    // Handle Password Change Request
     public function changeUserPassword(Request $req)
     {
-        $user_id = Auth::id();
+        $user = Auth::user();
 
         $req->validate([
             "old_password" => ["required", "string", "current_password"],
             "new_password" => ["required", "string", "min:8", "confirmed"],
         ]);
-
-        $user = User::find($user_id);
 
         if ($user) {
             $user->password = Hash::make($req->input("new_password"));
@@ -110,10 +115,10 @@ class ProfileController extends Controller
             ->with("error-password", "Request failed. Try again shortly.");
     }
 
+    // Handle User Deletion Request
     public function deleteUser(Request $req)
     {
-        $user_id = Auth::id();
-        $user = User::find($user_id);
+        $user = Auth::user();
 
         $req->validate([
             "password" => ["required", "string", "current_password", "confirmed"],
@@ -124,7 +129,7 @@ class ProfileController extends Controller
                 ->destroy($user->public_id);
         }
 
-        $deleted = User::destroy($user_id);
+        $deleted = User::destroy($user->id);
 
         if ($deleted) {
             return redirect(route("login"))
@@ -135,10 +140,10 @@ class ProfileController extends Controller
             ->with("error-delete", "Request failed. Try again shortly.");
     }
 
+    // Handle Avatar Deletion Request
     public function deleteAvatar()
     {
-        $user_id = Auth::id();
-        $user = User::find($user_id);
+        $user = Auth::user();
 
         if ($user->public_id) {
             Cloudinary::uploadApi()
@@ -155,6 +160,7 @@ class ProfileController extends Controller
             ->with("error-avatar", "Avatar not available to remove");
     }
 
+    // Show Searched User Profile
     public function showUserProfile(User $user)
     {
         $posts = $user->posts()->latest()->simplePaginate(3);
@@ -165,9 +171,10 @@ class ProfileController extends Controller
         ]);
     }
 
+    // Show Self Profile
     public function selfProfileShow()
     {
-        $user = User::findOrFail(Auth::id());
+        $user = Auth::user();
         $posts = $user->posts()->latest()->simplePaginate(3);
 
         return view("profile.self-show", [

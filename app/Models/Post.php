@@ -23,15 +23,25 @@ class Post extends Model
         "published_at",
     ];
 
+    public function author()
+    {
+        return $this->belongsTo(User::class, "user_id");
+    }
+
+    public function likedByUsers()
+    {
+        return $this->belongsToMany(
+            User::class,
+            "likes",
+            "post_id",
+            "user_id",
+        )->withPivot("created_at");
+    }
+
     protected function publishedAt(): Attribute
     {
         return Attribute::make(
             get: fn($value) => Carbon::parse($value)->format("d M, Y"),
         );
-    }
-
-    public function author()
-    {
-        return $this->belongsTo(User::class, "user_id");
     }
 }

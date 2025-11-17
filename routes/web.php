@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
@@ -8,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 // Routes for Authentication (Login and Registration)
 Route::controller(AuthController::class)
+    ->middleware("guest")
     ->group(function () {
 
         // Route for Login
@@ -27,79 +29,89 @@ Route::controller(AuthController::class)
             ->name("register.post");
     });
 
-Route::middleware("auth")->group(function () {
+// Route for Logout
+Route::get("/logout", [AuthController::class, "logout"])
+    ->name("logout");
 
-    // Route for Logout
-    Route::get("/logout", [AuthController::class, "logout"])
-        ->name("logout");
+// Home Route
+Route::get('/', [PostController::class, "index"])
+    ->name("home");
 
-    // Home Route
-    Route::get('/', [PostController::class, "index"])
-        ->name("home");
+// Routes for Search Functionality
+Route::controller(SearchController::class)
+    ->prefix("search")
+    ->group(function () {
 
-    // Routes for Search Functionality
-    Route::controller(SearchController::class)
-        ->prefix("search")
-        ->group(function () {
+        // Route to Search Form Route
+        Route::get('/', "searchForm")
+            ->middleware("auth")
+            ->name("search");
 
-            // Route to Search Form Route
-            Route::get('/', "searchForm")
-                ->name("search");
+        // Route to Get Searched User Route
+        Route::get('/user', "getSearchedUser")
+            ->middleware("auth")
+            ->name("search.get");
+    });
 
-            // Route to Get Searched User Route
-            Route::get('/user', "getSearchedUser")
-                ->name("search.get");
-        });
+// Route::get("profile/self", [ProfileController::class, "selfProfileShow"])
+//     ->name("self.profile.show");
 
-    // Routes for Profile Management
-    Route::controller(ProfileController::class)
-        ->prefix("profile")
-        ->group(function () {
+// Routes for Profile Management
+Route::controller(ProfileController::class)
+    ->prefix("profile")
+    ->group(function () {
 
-            // Route to View Profile Settings
-            Route::get("/settings", "profile")
-                ->name("profile.view");
+        // Route to View Profile Settings
+        Route::get("/settings", "profile")
+            ->name("profile.view");
 
-            // Route to Update User Information including avatar
-            Route::patch("update", "editUserInfo")
-                ->name("profile.update");
+        // Route to Update User Information including avatar
+        Route::patch("/update", "editUserInfo")
+            ->name("profile.update");
 
-            // Route to Delete User Account
-            Route::delete("delete", "deleteUser")
-                ->name("profile.delete");
+        // Route to Delete User Account
+        Route::delete("/delete", "deleteUser")
+            ->name("profile.delete");
 
-            // Route to Change User Password
-            Route::patch("edit/password", "changeUserPassword")
-                ->name("password.change");
+        // Route to Change User Password
+        Route::patch("/edit/password", "changeUserPassword")
+            ->name("password.change");
 
-            // Route to show searched user profile
-            Route::get("/show/{user:username}", "showUserProfile")
-                ->name("profile.show");
+        // Route to show self profile
+        Route::get("/self", "selfProfileShow")
+            ->name("self.profile.show");
 
-            // Route to show self profile
-            Route::get("/self", "selfProfileShow")
-                ->name("self.profile.show");
+        // Route to Delete Avatar
+        Route::get("/avatar-delete", "deleteAvatar")
+            ->name("profile.avatar.delete");
 
-            // Route to Delete Avatar
-            Route::get("avatar-delete", "deleteAvatar")
-                ->name("profile.avatar.delete");
-        });
+        // Route to show searched user profile
+        Route::get("/{user:username}", "showUserProfile")
+            ->name("profile.show");
+    });
 
-    // Routes for Post Management
-    Route::controller(PostController::class)
-        ->prefix("post")
-        ->group(function () {
+// Routes for Post Management
+Route::controller(PostController::class)
+    ->prefix("post")
+    ->group(function () {
 
         // Route to show create post form
-        Route::get("create", [PostController::class, "create"])
+        Route::get("create", "create")
             ->name("post.form");
 
         // Route to handle post creation
-        Route::post("create", [PostController::class, "createPost"])
+        Route::post("create", "createPost")
             ->name("post.create");
 
         // Route to show a specific post
-        Route::get("show/{post:slug}", [PostController::class, "show"])
+        Route::get("/@{username}/{post:slug}", "show")
             ->name("post.show");
+
+        // Route for Like Management 
+        Route::controller(LikeController::class)
+            ->group(function () {
+                // Route for like toggle 
+                Route::post("/@{username}/{post:slug}/like", "toggle")
+                    ->name("post.like");
+            });
     });
-});

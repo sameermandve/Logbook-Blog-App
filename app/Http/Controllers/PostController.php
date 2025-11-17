@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Post;
-use App\Models\User;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,9 +12,15 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware("auth");
+    }
+
     public function index()
     {
-        $user = User::findOrFail(Auth::id());
+        $user = Auth::user();
         $posts = $user->posts()
             ->with("author")
             ->latest()
@@ -77,7 +83,7 @@ class PostController extends Controller
             ->with("success-post", "✅ Post has been created successfully.");
     }
 
-    public function show(Post $post)
+    public function show(string $username, Post $post)
     {
         $post = $post->load("author");
 
