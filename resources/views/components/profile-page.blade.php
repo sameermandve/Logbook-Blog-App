@@ -1,6 +1,14 @@
 @props(['user', 'posts'])
 
-<section x-data="{tab: 'home'}" class="space-y-8 mt-8 sm:mt-12 w-full flex flex-col-reverse lg:flex-row p-4 bg-white md:shadow-xl md:border-2 border-gray-300 rounded-2xl">
+<section x-data="{
+    tab: 'home',
+    ...followUnfollow({
+        isFollowing: {{ $user->isFollowedBy(Auth::user()) ? 'true' : 'false' }},
+        followers_count: {{ $user->followers()->count() }},
+        following_count: {{ $user->following()->count() }},
+        url: '{{ route("user.follow", $user->id) }}',
+    })
+}" class="space-y-8 mt-8 sm:mt-12 w-full flex flex-col-reverse lg:flex-row p-4 bg-white md:shadow-xl md:border-2 border-gray-300 rounded-2xl">
     <!-- Bottom & Left side -->
     <div class="lg:flex-1 flex flex-col md:p-4 space-y-6">
         <!-- Tabs -->
@@ -36,7 +44,10 @@
                 {{ $user->bio ?: "No bio added yet!" }}
             </p>
 
-            <p class="text-sm font-medium text-gray-600 tracking-wide">303K Followers | 48 Following</p>
+            <p class="text-sm font-medium text-gray-600 tracking-wide">
+                <span x-text="followers_count"></span> Followers | 
+                <span x-text="following_count"></span> Following
+            </p>
 
             <p class="text-sm font-medium text-gray-500 tracking-wide">Member since {{ $user->created_at->format("M Y") }}</p>
         </div>
@@ -45,11 +56,9 @@
     <div class="hidden lg:block w-px bg-gray-300 m-4"></div>
 
     <!-- Top & Right side -->
+    <!-- x-data => Inside [resources → js → app.js] -->
     <div class="lg:w-[300px] flex flex-col md:p-4 space-y-8 mb-8 lg:mb-0">
         <!-- Profile avatar -->
-        <!-- <div class="rounded-full size-30 shadow-md border-2 border-gray-200">
-            <img class="size-30 rounded-full object-cover" src="{{ $user->avatar ?: 'https://res.cloudinary.com/dhh432tdg/image/upload/v1758554584/avatar_pco8fs.png' }}" alt="{{ $user->username }}">
-        </div> -->
         <img class="size-30 rounded-full object-cover border-2 border-gray-300" src="{{ $user->avatar ?: 'https://res.cloudinary.com/dhh432tdg/image/upload/v1758554584/avatar_pco8fs.png' }}" alt="{{ $user->username }}">
 
         <!-- Profile info -->
@@ -57,13 +66,36 @@
             <h1 class="text-gray-900 font-heading text-base lg:text-xl font-semibold">
                 <span>@</span>{{ $user->username }}
             </h1>
-            <p class="text-sm font-medium text-gray-600">303K Followers | 48 Following</p>
+            <p class="text-sm font-medium text-gray-600">
+                <span x-text="followers_count"></span> Followers |
+                <span x-text="following_count"></span> Following
+            </p>
         </div>
 
         <div class="flex flex-col space-y-6 pl-1">
             <p class="text-sm font-medium text-gray-600 tracking-tight leading-6 md:leading-5">{{ $user->bio }}</p>
 
-            <x-secondary-button width="lg:w-1/3" px="px-3" py="lg:py-1.5 py-2" class="leading-5 text-xs">Follow</x-secondary-button>
+            @if ($user->id !== Auth::user()->id)
+            <button @click="toggleFollow" :class="isFollowing ? 'bg-error-600 hover:bg-error-500 active:bg-error-700 focus:ring-error-500' : 'bg-primary-600 hover:bg-primary-500 active:bg-primary-700 focus:ring-primary-500' " class="lg:w-1/2 font-semibold rounded-lg leading-5 text-xs px-3 py-2 lg:py-1.5 items-center text-white border border-transparent uppercase tracking-widest  focus:outline-none focus:ring-2 focus:ring-offset-2 transition ease-in-out duration-150">
+                <template x-if="!isFollowing && !loading">
+                    <span>Follow</span>
+                </template>
+
+                <template x-if="loading">
+                    <div class="flex items-center justify-center w-full">
+                        <x-lucide-loader-circle x-show="loading" class="size-5 text-center text-white animate-spin" />
+                    </div>
+                </template>
+
+                <template x-if="isFollowing && !loading">
+                    <span>Unfollow</span>
+                </template>
+            </button>
+            @else
+            <a href="{{ route("search") }}">
+                <x-secondary-button width="lg:w-full" py="py-2 lg:py-1.5">Search for users</x-secondary-button>
+            </a>
+            @endif
         </div>
     </div>
 </section>

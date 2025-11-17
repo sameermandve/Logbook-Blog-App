@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -85,6 +86,9 @@ Route::controller(ProfileController::class)
         Route::get("/avatar-delete", "deleteAvatar")
             ->name("profile.avatar.delete");
 
+        Route::post("/follow/{user}", [FollowController::class, "toggleFollow"])
+            ->name("user.follow");
+
         // Route to show searched user profile
         Route::get("/{user:username}", "showUserProfile")
             ->name("profile.show");
@@ -107,11 +111,7 @@ Route::controller(PostController::class)
         Route::get("/@{username}/{post:slug}", "show")
             ->name("post.show");
 
-        // Route for Like Management 
-        Route::controller(LikeController::class)
-            ->group(function () {
-                // Route for like toggle 
-                Route::post("/@{username}/{post:slug}/like", "toggle")
-                    ->name("post.like");
-            });
+        // Route for Like Toggle Management
+        Route::post("/@{username}/{post:slug}/like", [LikeController::class, "toggle"])
+            ->name("post.like");
     });

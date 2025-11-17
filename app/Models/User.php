@@ -50,15 +50,42 @@ class User extends Authenticatable
         ];
     }
 
-    public function posts(){
+    public function following()
+    {
+        return $this->belongsToMany(
+            User::class,
+            "followers",
+            "follower_id",
+            "user_id",
+        );
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(
+            User::class,
+            "followers",
+            "user_id",
+            "follower_id",
+        );
+    }
+
+    public function isFollowedBy(User $user){
+        return $user->following()->where("user_id", $this->id)->exists();
+    }
+
+    public function posts()
+    {
         return $this->hasMany(Post::class);
     }
 
-    public function hasLiked(Post $post){
+    public function hasLiked(Post $post)
+    {
         return $post->likedByUsers()->where("user_id", $this->id)->exists();
     }
 
-    public function likedPosts(){
+    public function likedPosts()
+    {
         return $this->belongsToMany(
             Post::class,
             "likes",

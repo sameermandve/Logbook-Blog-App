@@ -21,6 +21,7 @@ class PostController extends Controller
     public function index()
     {
         $user = Auth::user();
+
         $posts = $user->posts()
             ->with("author")
             ->latest()

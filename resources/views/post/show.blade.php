@@ -5,23 +5,28 @@
 @section("content")
 
 <!-- From PostController → show() => $post & $user -->
-<article
-    class="bg-white md:shadow-lg md:rounded-2xl p-6 sm:p-10 mx-auto mt-8 max-w-4xl flex flex-col items-center md:border-2 md:border-gray-200">
+<article x-data="followUnfollow({
+    isFollowing: {{ $post->author->isFollowedBy(Auth::user()) ? 'true' : 'false' }},
+    followers_count: {{ $post->author->followers()->count() }},
+    following_count: {{ $post->author->following()->count() }},
+    url: '{{ route("user.follow", $post->author->id) }}',
+})"
+    class="bg-white md:shadow-lg md:rounded-2xl p-4 sm:p-10 mx-auto mt-8 max-w-4xl flex flex-col items-center md:border-2 md:border-gray-200">
 
     <!-- Post Header -->
     <div class="w-full max-w-4xl mb-6 flex items-center justify-between pb-6 border-b border-gray-200">
         <!-- Left: Author Info -->
         <a href="{{ route("profile.show", $post->author->username) }}" class="flex items-center space-x-3">
             <img
-                src="{{ $post->author->avatar }}"
+                src="{{ $post->author->avatar ?: 'https://res.cloudinary.com/dhh432tdg/image/upload/v1758554584/avatar_pco8fs.png' }}"
                 alt="{{ $post->author->username }}"
-                class="w-12 h-12 rounded-full border border-gray-300 object-cover" />
+                class="size-12 md:size-15 rounded-full border border-gray-300 object-cover" />
 
             <div>
-                <p class="font-semibold text-gray-900 text-lg">
+                <p class="text-base sm:text-lg font-semibold text-gray-900">
                     {{ $post->author->username }}
                 </p>
-                <p class="text-sm font-medium text-gray-500">
+                <p class="text-xs md:text-sm font-medium text-gray-500">
                     •
                     <span>{{ $post->published_at }}</span>
                 </p>
@@ -30,22 +35,22 @@
 
         <!-- Right: Follow Button -->
         @auth
-        @if (auth()->id())
-        <form action="" method="POST">
-            @csrf
+        @if (Auth::user()->id !== $post->author->id)
+        <button @click="toggleFollow" :class="isFollowing ? 'bg-error-600 hover:bg-error-500 active:bg-error-700 focus:ring-error-500' : 'bg-primary-600 hover:bg-primary-500 active:bg-primary-700 focus:ring-primary-500' " class="w-[103px] md:w-1/6 font-semibold rounded-lg leading-5 text-xs px-3 py-2 lg:py-1.5 items-center text-white border border-transparent uppercase tracking-widest  focus:outline-none focus:ring-2 focus:ring-offset-2 transition ease-in-out duration-150">
+            <template x-if="!isFollowing && !loading">
+                <span>Follow</span>
+            </template>
 
-            @if (auth()->user())
-            <button
-                class="px-4 py-2 text-sm font-semibold border border-primary-600 text-primary-600 rounded-lg hover:bg-primary-50 transition">
-                Following
-            </button>
-            @else
-            <button
-                class="px-4 py-2 text-sm font-semibold bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition">
-                Follow
-            </button>
-            @endif
-        </form>
+            <template x-if="loading">
+                <div class="flex items-center justify-center w-full">
+                    <x-lucide-loader-circle x-show="loading" class="size-5 text-center text-white animate-spin" />
+                </div>
+            </template>
+
+            <template x-if="isFollowing && !loading">
+                <span>Unfollow</span>
+            </template>
+        </button>
         @endif
         @endauth
     </div>

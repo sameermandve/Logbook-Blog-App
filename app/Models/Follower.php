@@ -6,14 +6,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class Like extends Model
+class Follower extends Model
 {
     use HasFactory, Notifiable;
+
+    protected $table = "followers";
 
     public const UPDATED_AT = null;
 
     protected $fillable = [
-        "post_id",
         "user_id",
+        "follower_id",
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function follower(){
+        return $this->belongsTo(User::class, "follower_id");
+    }
 }
