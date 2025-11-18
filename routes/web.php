@@ -111,6 +111,17 @@ Route::controller(PostController::class)
         Route::get("/@{username}/{post:slug}", "show")
             ->name("post.show");
 
+        // Route to go to edit form
+        Route::get("/@{username}/{post:slug}/edit", "editPostForm")
+            ->name("post.edit.form");
+
+        // Route to handle edit post
+        Route::patch("/@{username}/{post:slug}/edit", "editPost")
+            ->name("post.edit");
+
+        Route::delete("/@{username}/{post:slug}/delete", "deletePost")
+            ->name("post.delete");
+
         // Route for Like Toggle Management
         Route::post("/@{username}/{post:slug}/like", [LikeController::class, "toggle"])
             ->name("post.like");

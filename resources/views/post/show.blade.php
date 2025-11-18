@@ -27,8 +27,13 @@
                     {{ $post->author->username }}
                 </p>
                 <p class="text-xs md:text-sm font-medium text-gray-500">
-                    •
-                    <span>{{ $post->published_at }}</span>
+                    <span>
+                        @if ($post->created_at->eq($post->updated_at))
+                        {{ $post->published_at }}
+                        @else
+                        Updated on {{ $post->updated_at->format("M d, Y") }}
+                        @endif
+                    </span>
                 </p>
             </div>
         </a>
@@ -36,6 +41,7 @@
         <!-- Right: Follow Button -->
         @auth
         @if (Auth::user()->id !== $post->author->id)
+        <!-- Follow toggle button for visitors -->
         <button @click="toggleFollow" :class="isFollowing ? 'bg-error-600 hover:bg-error-500 active:bg-error-700 focus:ring-error-500' : 'bg-primary-600 hover:bg-primary-500 active:bg-primary-700 focus:ring-primary-500' " class="w-[103px] md:w-1/6 font-semibold rounded-lg leading-5 text-xs px-3 py-2 lg:py-1.5 items-center text-white border border-transparent uppercase tracking-widest  focus:outline-none focus:ring-2 focus:ring-offset-2 transition ease-in-out duration-150">
             <template x-if="!isFollowing && !loading">
                 <span>Follow</span>
@@ -51,6 +57,9 @@
                 <span>Unfollow</span>
             </template>
         </button>
+        @else
+        <!-- Post options for post owner -->
+        <x-post-editable :user="Auth::user()" :post="$post" />
         @endif
         @endauth
     </div>
@@ -69,7 +78,7 @@
     </div>
 
     <!-- Description Section -->
-    <div class="w-full max-w-3xl space-y-6 text-gray-700 leading-relaxed text-base sm:text-lg mb-8">
+    <div class="w-full max-w-3xl text-wrap space-y-6 text-gray-700 leading-relaxed text-base sm:text-lg mb-8">
         <h2 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
             Description
         </h2>

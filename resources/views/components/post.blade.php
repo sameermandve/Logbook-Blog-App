@@ -27,11 +27,12 @@
         </a>
 
         {{-- Description --}}
-        <p class="text-sm md:text-base text-gray-700 leading-relaxed">
+        <p class="text-sm text-wrap md:text-base text-gray-700 leading-relaxed">
             {{ Str::words($post->description, 30) }}
         </p>
 
         <!-- Author and published date -->
+        @if ($post->created_at->eq($post->updated_at))
         <p class="text-xs md:text-sm font-medium text-gray-600 leading-tight mb-2 xl:mb-0">
             published by
             <a href="{{ route("profile.show", $post->author->username) }}">
@@ -39,6 +40,16 @@
             </a> on
             {{ $post->published_at }}
         </p>
+        @else
+        <p class="text-xs md:text-sm font-medium text-gray-600 leading-tight mb-2 xl:mb-0">
+            updated by
+            <a href="{{ route("profile.show", $post->author->username) }}">
+                <span class="hover:underline text-gray-900">{{ $post->author->username }}</span>
+            </a> on
+            {{ $post->updated_at->format("M d, Y") }}
+        </p>
+        @endif
+
 
         {{-- Read More Button --}}
         <a href="{{ route('post.show', [
