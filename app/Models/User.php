@@ -70,7 +70,8 @@ class User extends Authenticatable
         );
     }
 
-    public function isFollowedBy(User $user){
+    public function isFollowedBy(User $user)
+    {
         return $user->following()->where("user_id", $this->id)->exists();
     }
 
@@ -92,5 +93,19 @@ class User extends Authenticatable
             "user_id",
             "post_id",
         )->withPivot("created_at");
+    }
+
+    public function commentedPosts()
+    {
+        return $this->belongsToMany(
+            Post::class,
+            "comments",
+            "user_id",
+            "post_id",
+        )->withPivotValue("created_at");
+    }
+
+    public function comments(){
+        return $this->hasMany(Comment::class);
     }
 }

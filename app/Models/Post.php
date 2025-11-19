@@ -38,6 +38,20 @@ class Post extends Model
         )->withPivot("created_at");
     }
 
+    public function commentedByUsers()
+    {
+        return $this->belongsToMany(
+            User::class,
+            "comments",
+            "post_id",
+            "user_id",
+        );
+    }
+
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
+
     protected function publishedAt(): Attribute
     {
         return Attribute::make(

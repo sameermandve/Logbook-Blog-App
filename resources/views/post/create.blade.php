@@ -5,22 +5,23 @@
 <!-- View => From PostController → create() -->
 <!-- Action => From PostController → createPost() -->
 @section("main")
+
+@if (session()->has("success-post"))
+<x-toast-success>
+    {{ session()->get("success-post") }}
+</x-toast-success>
+@endif
+
+@if (session()->has("error-post"))
+<x-toast-error>
+    {{ session()->get("error-post") }}
+</x-toast-error>
+@endif
+
 <div class="flex justify-center items-center lg:shadow-md lg:border-2 lg:border-gray-300 sm:rounded-2xl mt-8">
     <div class="flex flex-col w-full p-6 lg:p-8">
         <div class="mb-1">
             <x-heading class="text-center">Create New Post</x-heading>
-
-            @if (session()->has("success-post"))
-            <x-alert class="text-success-800 bg-success-50 mt-4">
-                {{ session()->get("success-post") }}
-            </x-alert>
-            @endif
-
-            @if (session()->has("error-post"))
-            <x-alert class="text-error-800 bg-error-50 mt-4">
-                {{ session()->get("error-post") }}
-            </x-alert>
-            @endif
         </div>
 
         <div x-data="formLoading" class="pt-8 pb-4">
@@ -48,7 +49,7 @@
                 <!-- Post description -->
                 <div>
                     <x-input-label for="description">Description</x-input-label>
-                    <x-textarea name="description" id="description" class="block mt-2 w-full" placeholder="Write a short description about the post..." value="{{ old('description') }}" />
+                    <x-textarea name="description" id="description" class="block mt-2 w-full" placeholder="Write a short description about the post...">{{ old('description') }}</x-textarea>
                     @error("description")
                     <x-input-error>{{ $message }}</x-input-error>
                     @enderror

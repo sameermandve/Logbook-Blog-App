@@ -10,5 +10,19 @@ class Comment extends Model
 {
     use HasFactory, Notifiable;
 
-    protected const UPDATED_AT = null;
+    public const UPDATED_AT = null;
+
+    protected $fillable = [
+        "comment_content",
+        "post_id",
+        "user_id",
+    ];
+
+    public function post(){
+        return $this->belongsTo(Post::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

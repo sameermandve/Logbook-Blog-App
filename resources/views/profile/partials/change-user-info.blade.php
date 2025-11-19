@@ -7,30 +7,6 @@
         <p class="text-sm text-gray-600 mt-1">
             Update your account details, including username, bio, email address, and profile avatar.
         </p>
-
-        @if (session()->has("success-avatar"))
-        <x-alert class="text-success-800 bg-success-50 mt-4">
-            {{ session()->get("success-avatar") }}
-        </x-alert>
-        @endif
-
-        @if (session()->has("error-avatar"))
-        <x-alert class="text-error-800 bg-error-50 mt-4">
-            {{ session()->get("error-avatar") }}
-        </x-alert>
-        @endif
-
-        @if (session()->has("success-info"))
-        <x-alert class="text-success-800 bg-success-50 mt-4">
-            {{ session()->get("success-info") }}
-        </x-alert>
-        @endif
-
-        @if (session()->has("error-info"))
-        <x-alert class="text-error-800 bg-error-50 mt-4">
-            {{ session()->get("error-info") }}
-        </x-alert>
-        @endif
     </header>
 
     <!-- View => From ProfileController → profile() => $user -->
@@ -39,7 +15,7 @@
         @csrf
         @method('PATCH')
         <div class="flex flex-col items-center justify-center">
-            <img class="size-25 rounded-full border-2 mb-1" src="{{ $user->avatar ?? 'https://res.cloudinary.com/dhh432tdg/image/upload/v1758554584/avatar_pco8fs.png' }}" alt="Rounded avatar">
+            <img class="size-35 rounded-full border-2 mb-1" src="{{ $user->avatar ?? 'https://res.cloudinary.com/dhh432tdg/image/upload/v1758554584/avatar_pco8fs.png' }}" alt="Rounded avatar">
             <!-- From ProfileController → deleteAvatar() -->
             <a href="{{ route('profile.avatar.delete') }}">
                 <x-lucide-trash-2 class="size-6 text-error-600 hover:text-error-700 cursor-pointer hover:scale-105" />
@@ -71,7 +47,7 @@
 
         <div>
             <x-input-label for="bio">Bio</x-input-label>
-            <x-textarea name="bio" id="bio"
+            <x-textarea name="bio" id="bio" rows="7"
                 class="block mt-2 w-full">{{ old('bio', $user->bio) }}</x-textarea>
             @error("bio")
             <x-input-error>{{ $message }}</x-input-error>

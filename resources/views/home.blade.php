@@ -4,15 +4,15 @@
 <div class="space-y-8 mt-8 sm:mt-10 flex flex-col p-4 sm:p-0">
     <div class="mb-1">
         @if (session()->has("success-delete"))
-        <x-alert class="text-success-800 bg-success-50 mt-4">
+        <x-toast-success>
             {{ session()->get("success-delete") }}
-        </x-alert>
+        </x-toast-success>
         @endif
 
         @if (session()->has("error-delete"))
-        <x-alert class="text-error-800 bg-error-50 mt-4">
+        <x-toast-error>
             {{ session()->get("error-delete") }}
-        </x-alert>
+        </x-toast-error>
         @endif
     </div>
 

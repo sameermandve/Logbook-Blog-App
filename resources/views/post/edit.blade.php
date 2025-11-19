@@ -11,9 +11,9 @@
             <x-heading class="text-center">Edit Post</x-heading>
 
             @if (session()->has("error-edit-post"))
-            <x-alert class="text-error-800 bg-error-50 mt-4">
+            <x-toast-error>
                 {{ session()->get("error-edit-post") }}
-            </x-alert>
+            </x-toast-error>
             @endif
         </div>
 

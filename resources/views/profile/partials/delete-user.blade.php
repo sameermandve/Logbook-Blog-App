@@ -7,12 +7,6 @@
         <p class="text-sm text-error-500 mt-1">
             Once your account is deleted, all of its resources and data will be permanently deleted.
         </p>
-
-        @if (session()->has("error-delete"))
-        <x-alert class=" text-error-800 bg-error-50 mt-4">
-            {{ session()->get("error-delete") }}
-        </x-alert>
-        @endif
     </header>
 
     <!-- View => From ProfileController → profile() -->

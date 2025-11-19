@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
@@ -119,10 +120,19 @@ Route::controller(PostController::class)
         Route::patch("/@{username}/{post:slug}/edit", "editPost")
             ->name("post.edit");
 
+        // Route to handle post deletion
         Route::delete("/@{username}/{post:slug}/delete", "deletePost")
             ->name("post.delete");
 
         // Route for Like Toggle Management
         Route::post("/@{username}/{post:slug}/like", [LikeController::class, "toggle"])
             ->name("post.like");
+
+        // Route for Comment Management
+        Route::post("/@{username}/{post:slug}/comment", [CommentController::class, "commentPost"])
+            ->name("post.comment");
+
+        // Route for Comment deletion
+        Route::delete("/@{username}/{post:slug}/comment/{comment}", [CommentController::class, "commentDelete"])
+            ->name("post.comment.delete");
     });

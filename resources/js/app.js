@@ -16,7 +16,7 @@ document.addEventListener('alpine:init', () => {
         isFollowing: initialState.isFollowing,
         followers_count: initialState.followers_count,
         following_count: initialState.following_count,
-        loading: false, 
+        loading: false,
         toggleFollow() {
             this.loading = true;
 

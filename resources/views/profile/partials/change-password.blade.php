@@ -7,12 +7,6 @@
         <p class="text-sm text-gray-600 mt-1">
             Ensure your account is using a long, random password to stay secure.
         </p>
-
-        @if (session()->has("error-password"))
-        <x-alert class="text-error-800 bg-error-50 mt-4">
-            {{ session()->get("error-password") }}
-        </x-alert>
-        @endif
     </header>
 
     <!-- View => From ProfileController → profile() -->

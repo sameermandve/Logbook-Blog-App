@@ -9,8 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
-use function Pest\Laravel\session;
-
 class PostController extends Controller
 {
 
@@ -21,9 +19,11 @@ class PostController extends Controller
 
     public function index()
     {
-        $user = Auth::user();
+        $auth_user = Auth::user();
 
-        $posts = $user->posts()
+        $ids = $auth_user->following()->pluck("user_id");
+
+        $posts = Post::whereIn("user_id", $ids)
             ->with("author")
             ->latest()
             ->simplePaginate(5);
@@ -42,8 +42,8 @@ class PostController extends Controller
     {
         $req->validate([
             "title" => ["required", "string", "max:100"],
-            "cover_image" => ["required", "image", "max:10480", "mimes:jpeg,jpg,png,svg"],
-            "description" => ["required", "string", "max:1000"],
+            "cover_image" => ["required", "image", "max:10240", "mimes:jpeg,jpg,png,svg"],
+            "description" => ["required", "string", "max:3000"],
         ]);
 
         $coverImageUrl = null;
@@ -78,11 +78,11 @@ class PostController extends Controller
 
         if (!$post) {
             return redirect(route("post.form"))
-                ->with("error-post", "❌ Post creation failed. Please try again shortly.");
+                ->with("error-post", "Post creation failed. Please try again shortly.");
         }
 
         return redirect(route("post.form"))
-            ->with("success-post", "✅ Post has been created successfully.");
+            ->with("success-post", "Post has been created successfully.");
     }
 
     public function show(string $username, Post $post)
@@ -149,11 +149,7 @@ class PostController extends Controller
 
             return redirect()
                 ->to(route("post.show", [Auth::user()->username, $post->slug]))
-                ->with("success-edit-post", "Post updated successfully.")
-                ->withHeaders([
-                    'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
-                    'Pragma' => 'no-cache',
-                ]);;
+                ->with("success-edit-post", "Post updated successfully.");
         }
 
         return redirect()

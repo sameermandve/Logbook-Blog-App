@@ -4,6 +4,14 @@
 
 @section("content")
 
+@if (session()->has("success-comment"))
+<x-toast-success>{{ session()->get("success-comment") }}</x-toast-success>
+@endif
+
+@if (session()->has("error-comment"))
+<x-toast-error>{{ session()->get("error-comment") }}</x-toast-error>
+@endif
+
 <!-- From PostController → show() => $post & $user -->
 <article x-data="followUnfollow({
     isFollowing: {{ $post->author->isFollowedBy(Auth::user()) ? 'true' : 'false' }},
@@ -93,16 +101,25 @@
             <!-- Like Button Section -->
             <x-like :post="$post" />
 
-            <!-- Comment Button Section -->
+            <!-- Comment Count Section -->
             <div class="flex-1 flex items-center justify-center border-l-2 border-gray-300">
-                <x-lucide-message-circle-more class="size-6 text-gray-500 hover:text-gray-600 hover:scale-105" />
-                <span class="text-gray-500 text-lg font-semibold ms-2">30 comments</span>
+                <x-lucide-message-circle-more class="size-6 text-gray-500" />
+                <span class="text-gray-500 text-lg font-semibold ms-2">
+                    {{ $post->commentedByUsers()->count() }} comments
+                </span>
             </div>
         </div>
     </div>
 
     <div class="w-full max-w-3xl mb-8">
-        @include("post.partials.comment")
+        @include("post.partials.comment", ["post" => $post])
+    </div>
+
+    <div class="w-full max-w-3xl mb-8">
+        <h2 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-2">
+            Comments
+        </h2>
+        <x-comments-section :post="$post" :user="Auth::user()" />
     </div>
 </article>
 
