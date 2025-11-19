@@ -65,7 +65,7 @@ To get a local copy up and running, follow these simple steps.
     
     Bash
     
-        git clone [https://github.com/sameermandve/Logbook-Blog-App.git](https://github.com/sameermandve/Logbook-Blog-App.git)
+        git clone https://github.com/sameermandve/Logbook-Blog-App.git
         cd logbook-blog-app
     
 2.  **Install PHP dependencies:**
