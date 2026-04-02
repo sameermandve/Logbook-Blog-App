@@ -4,7 +4,7 @@
 
         <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             <a href="{{ route("post.form") }}" type="button" class="text-white shadow-xs font-medium leading-5 rounded-lg text-sm px-3 py-2 box-border bg-primary-600 border border-transparent uppercase tracking-widest hover:bg-primary-500 active:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                Add new post
+                New post
             </a>
             <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-stone-600 rounded-xl md:hidden hover:bg-gray-50 hover:text-heading focus:outline-none focus:ring-2 focus:ring-gray-100" aria-controls="navbar-sticky" aria-expanded="false">
                 <span class="sr-only">Open main menu</span>
